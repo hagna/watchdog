@@ -18,10 +18,11 @@ var longdesc = `This program is a list of timers controlled by a UDP client (or 
 If the client sends any Message (of length > 0) the server will setup a default
 timer, but a Message of the form "[type]|[Message]|[action]|[timeout]" will
 make the server start a timer of the specified type.  All the parameters are
-optional, so the Message "DWN||acton.sh" is valid and would either start a new
-timer or update an existing timer with the specified parameters.  Blank Message
-fields will not trigger an update.  A client can start multiple timers with
-multiple actions and other parameters.
+optional, so the Message "DWN||acton" is valid and would either start a new
+timer or update an existing timer with the specified parameters.  A client can
+start multiple timers with multiple actions and other parameters.  Also
+"typeA|this is a message" followed by "typeA||newaction" would update the
+action but not the message, and enables the client to set the message once.
 
 After alerting once or alerting sufficiently this program will remove the
 corresponding timer from its list `
