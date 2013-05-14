@@ -6,7 +6,7 @@ import (
 	"net"
 )
 
-var msg = flag.String("m", "bar", "message to send to the server")
+var msg = flag.String("m", "bar", "message to send format is [type]|[Message]|[action]|[timeout]")
 var ep = flag.String("ep", "0.0.0.0:3212", "network endpoint")
 
 func main() {

@@ -18,10 +18,16 @@ var endpoint = flag.String("ep", "0.0.0.0:3212", "Network interface and port on 
 
 type world string
 
-func (w world) Alarm(m watchdog.Message) {
-	log.Println(m)
+func (w world) On(m watchdog.Message) {
+	log.Println("ON", m,)
 	out, _ := exec.Command(*action).CombinedOutput()
-	log.Println(string(out))
+	// comment out the following for great security
+	// out, _ := exec.Command(m.Action).CombinedOutput()
+	log.Println("output is: ", string(out))
+}
+
+func (w world) Off(m watchdog.Message) {
+	log.Println("OFF", m)
 }
 
 func main() {

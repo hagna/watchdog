@@ -16,7 +16,7 @@ import (
 var longdesc = `This program is a list of timers controlled by a UDP client (or clients).
 
 If the client sends any Message (of length > 0) the server will setup a default
-timer, but a Message of the form "[type]|[Message]|[action]|[timeout]" will
+timer, but a Message of the form "[type]|[message]|[action]|[timeout]" will
 make the server start a timer of the specified type.  All the parameters are
 optional, so the Message "DWN||acton" is valid and would either start a new
 timer or update an existing timer with the specified parameters.  A client can
@@ -25,7 +25,8 @@ start multiple timers with multiple actions and other parameters.  Also
 action but not the message, and enables the client to set the message once.
 
 After alerting once or alerting sufficiently this program will remove the
-corresponding timer from its list `
+corresponding timer from its list 
+`
 
 func Usage() {
 	fmt.Fprintf(os.Stderr, "Usage of %s: %s [OPTIONS]\n\n", os.Args[0], os.Args[0])
@@ -40,7 +41,9 @@ const (
 )
 
 type Handler interface {
-	Alarm(m Message)
+	On(m Message)
+	Off(m Message)
+
 }
 
 type Server struct {
@@ -49,7 +52,6 @@ type Server struct {
 	From       bool
 	Fromstrict bool
 	Handler    Handler // handler to invoke, default if nil
-	DefAction  string
 	Alertonce  bool
 	Alertlimit int
 	AlertText  string
@@ -154,6 +156,7 @@ loop:
 		case ctrl := <-t.ctrl:
 			switch ctrl {
 			case RESET:
+				t.Handler.Off(t.Message)
 				t.relight()
 				alertcount = 0
 			case STOP:
@@ -164,7 +167,7 @@ loop:
 			t.Message.change(b)
 		case <-t.Fuse:
 			log.Println("Timeout reached", t.Message)
-			t.Handler.Alarm(t.Message)
+			t.Handler.On(t.Message)
 			t.relight()
 			alertcount++
 			if alertcount > t.Alertlimit || t.Alertonce {
