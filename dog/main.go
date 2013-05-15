@@ -18,7 +18,7 @@ var endpoint = flag.String("ep", "0.0.0.0:3212", "Network interface and port on 
 
 type world string
 
-func (w world) On(m watchdog.Message) {
+func (w world) Starve(m watchdog.Message) {
 	log.Println("ON", m,)
 	out, _ := exec.Command(*action).CombinedOutput()
 	// comment out the following for great security
@@ -26,7 +26,7 @@ func (w world) On(m watchdog.Message) {
 	log.Println("output is: ", string(out))
 }
 
-func (w world) Off(m watchdog.Message) {
+func (w world) Feed(m watchdog.Message) {
 	log.Println("OFF", m)
 }
 

@@ -52,8 +52,8 @@ const (
 )
 
 type Handler interface {
-	On(m Message)
-	Off(m Message)
+	Starve(m Message)
+	Feed(m Message)
 
 }
 
@@ -167,7 +167,7 @@ loop:
 		case ctrl := <-t.ctrl:
 			switch ctrl {
 			case RESET:
-				t.Handler.Off(t.Message)
+				t.Handler.Feed(t.Message)
 				t.relight()
 				alertcount = 0
 			case STOP:
@@ -178,7 +178,7 @@ loop:
 			t.Message.change(b)
 		case <-t.Fuse:
 			log.Println("Timeout reached", t.Message)
-			t.Handler.On(t.Message)
+			t.Handler.Starve(t.Message)
 			t.relight()
 			alertcount++
 			if alertcount > t.Alertlimit || t.Alertonce {
