@@ -25,7 +25,18 @@ start multiple timers with multiple actions and other parameters.  Also
 action but not the message, and enables the client to set the message once.
 
 After alerting once or alerting sufficiently this program will remove the
-corresponding timer from its list 
+corresponding timer from its list. 
+`
+
+var Examples = `To send data with python do:
+
+import socket
+
+sock = socket.socket()
+sock.connect(('watchdog.sm', 3212))
+sock.sendall('messageType|Nice long explanation|action1|900ms')
+sock.close()
+
 `
 
 func Usage() {
