@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-var longdesc = `This program is a list of timers controlled by a UDP client (or clients).
+var Longdesc = `This program is a list of timers controlled by a UDP client (or clients).
 
 If the client sends any Message (of length > 0) the server will setup a default
 timer, but a Message of the form "[type]|[message]|[action]|[timeout]" will
@@ -30,7 +30,7 @@ corresponding timer from its list
 
 func Usage() {
 	fmt.Fprintf(os.Stderr, "Usage of %s: %s [OPTIONS]\n\n", os.Args[0], os.Args[0])
-	fmt.Fprintf(os.Stderr, longdesc)
+	fmt.Fprintf(os.Stderr, Longdesc)
 	flag.PrintDefaults()
 	fmt.Fprintf(os.Stderr, "\n")
 }
