@@ -270,7 +270,8 @@ func (s *Server) ListenAndServe() error {
 			continue
 		}
 		heartbeat := Message{From: addr.String()}
-		heartbeat.extract(b[:n-1]) // remove newline
+		b = bytes.TrimLeft(b[:n], "\n")
+		heartbeat.extract(b) // remove newline
 		newmsg <- heartbeat
 	}
 

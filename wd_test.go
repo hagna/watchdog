@@ -25,7 +25,7 @@ func cmpMsg(s string, b *Message) (res bool) {
 	if a.Type != b.Type {
 		res = false
 	}
-	if a.Msg != b.Msg {
+	if a.Text != b.Text {
 		res = false
 	}
 	if res == false {
@@ -52,7 +52,7 @@ func TestGetSet(t *testing.T) {
 	if def.Type != "alpha" {
 		t.Fatalf("failed to change defaults")
 	}
-	if def.Msg != "abc" {
+	if def.Text != "abc" {
 		t.Fatalf("shouldn't have updated msg")
 	}
 }
