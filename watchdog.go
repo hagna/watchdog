@@ -70,7 +70,7 @@ type Server struct {
 
 type Message struct {
 	Type        string
-	Msg         string
+	Text	string
 	Action      string
 	Timeout     time.Duration
 	From        string
