@@ -232,11 +232,10 @@ func messageReceiver(srv *Server, newmsg <-chan Message) {
 				nt := srv.newtimer(s, remove)
 				alltimers[s.Type] = nt
 				v = nt
-			} else {
-				log.Println("another one of type", s.Type)
-				v.update(s)
-				v.reset()
-			}
+			} 
+			log.Println("another one of type", s.Type)
+			v.update(s)
+			v.reset()
 		case s := <-remove:
 			delete(alltimers, s.Type)
 			log.Printf("removed %+v\n", s)
