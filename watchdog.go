@@ -13,16 +13,21 @@ import (
 	"time"
 )
 
-var Longdesc = `This program is a list of timers controlled by a UDP client (or clients).
+var Longdesc = `This watchdog server consists of one or more watchdogs that you feed (or starve) with a UDP client (or clients).
 
-If the client sends any Message (of length > 0) the server will setup a default
-timer, but a Message of the form "[type]|[message]|[action]|[timeout]" will
-make the server start a timer of the specified type.  All the parameters are
-optional, so the Message "DWN||acton" is valid and would either start a new
-timer or update an existing timer with the specified parameters.  A client can
-start multiple timers with multiple actions and other parameters.  Also
-"typeA|this is a message" followed by "typeA||newaction" would update the
-action but not the message, and enables the client to set the message once.
+Sending any message (length > 0) to the server will start a new default
+watchdog timer or reset an existing default watchdog timer if one doesn't exist.
+
+Sending a message like "[type]|[message]|[action]|[timeout]" will start a
+watchdog timer identified by type or reset an existing timer of that type if one
+doesn't exist.
+
+All the parameters are optional, so the Message "DWN||acton" is valid and would
+either start a new timer or update an existing timer with the specified
+parameters.  A client can start multiple timers with multiple actions and other
+parameters.  Also "typeA|this is a message" followed by "typeA||newaction"
+would update the action but not the message, and enables the client to set the
+message once.
 
 After alerting once or alerting sufficiently this program will remove the
 corresponding timer from its list. 
@@ -232,8 +237,9 @@ func messageReceiver(srv *Server, newmsg <-chan Message) {
 				nt := srv.newtimer(s, remove)
 				alltimers[s.Type] = nt
 				v = nt
-			} 
-			log.Println("another one of type", s.Type)
+			} else { 
+				log.Println("another one of type", s.Type)
+			}
 			v.update(s)
 			v.reset()
 		case s := <-remove:
